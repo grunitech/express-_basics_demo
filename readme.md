@@ -1,11 +1,22 @@
-These are the commands we ran in order for installation:
+These are the commands we ran in order for everything:
+before the start 
+
+- choose where I want my project to be in 
+- mkdir live_demo
+    (In Mac) create a folder named "live_demo" from current path
+- Open vscode -> file -> open folder -> live_demo (in the location you want it) 
+
+Basic Project setup
+
 1. npm init -y 
  setup for JS project
 
 2. git init 
  setup for git
 
-downloads
+
+Downloads
+
 3. npm i express
  download express to our dependencies
 
@@ -27,9 +38,11 @@ downloads
 9. npm i --save-dev @types/cors
  download the type body-parser to our devDependencies
 
+
 Configurations
+
 10. touch .gitignore
- (On Mac) create a txt file named ".gitignore"
+ (In Mac) create a file named ".gitignore" since an extension wasn't specified by default ".txt"
 
 11. Copy the .gitignore given by Shmuela: https://github.com/shmool/remedy/blob/main/.gitignore 
 
@@ -64,3 +77,37 @@ Running Setup
    The first, builds the typesript code into javasript code,  and will take from the ts files from "/src" (due to the "rootDir" configuration we set in step 14) and put it in "/dist" (due to the "outDir" configuration we set in step 13))
 
    The second, runs the result javascript code of "app.js" in "./dist" directory. 
+
+
+Git set initial commit (note: in step 2 we set up the git with git init)
+
+17. git add .
+    adds to the next commit the files that were changes except those specified in ".gitignore" or in a  
+    directory (folder) which specifed in ".gitignore"
+
+18. git commit -m "initial commit"
+    do a commit with the message "initial commit"
+
+
+Run the project
+
+19. mkdir src
+    (In Mac) create a folder named "src" in current path
+
+20. mkdir dist
+    (In Mac) create a folder named "dist" from current path
+
+21. cd src
+    (In both Mac and Windows) enter the directory "src"
+
+22. touch app.ts
+    (In Mac) create a file named "app", in the directory "src" since an extension was specified will be ".ts"
+
+23. cd .. 
+    exit the current dirctory to the one above it
+
+24. npm run build
+    see step 15, for further explanation.
+
+25. npm run start
+    see step 16, for further explanation.
