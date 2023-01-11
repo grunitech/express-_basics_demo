@@ -60,6 +60,10 @@ app.post("/data",(req:Request, res:Response)=> {
 })
 // FROM here everything related to mock DB 
 // objType => users / products 
+
+app.get("/db/info",(req:Request, res:Response)=> {
+    res.send(`users: ${users} \n products:${products}`);
+})
 app.post("/db/insert/:objType",(req:Request, res:Response)=> {
     console.log(users,products)
     const objType = req.params.objType;
