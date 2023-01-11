@@ -66,7 +66,7 @@ app.post("/db/insert/:objType",(req:Request, res:Response)=> {
     if (objType === 'Users'){
         const id:number = req.body.id;
         const name:string = req.body.name; 
-        users.push(User(id,name));
+        users.push(new User(id,name));
         res.send("User was entered")
         return;
     }
@@ -74,7 +74,7 @@ app.post("/db/insert/:objType",(req:Request, res:Response)=> {
         const id:number = req.body.id;
         const name:string = req.body.name;
         const price:number = req.body.price;
-        products.push(Product(id,name,price));
+        products.push(new Product(id,name,price));
         res.send("Product was entered")
         return;
     }
