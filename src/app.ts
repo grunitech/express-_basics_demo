@@ -1,12 +1,12 @@
 // imports from modules
 import express from 'express'
-import {Request, Response} from 'express'
+import { Request, Response } from 'express'
 import bodyParser from 'body-parser';
 import cors from 'cors';
 
 // import from files
-import {User} from './User';
-import {Product} from './Product';
+import { User } from './User';
+import { Product } from './Product';
 
 // constants for app
 const app = express();
@@ -128,7 +128,7 @@ app.post("/db/getbyid/:objType/:oid",(req:Request, res:Response)=> {
         const result = users.filter((user ) => user.id === id)
         if (result.length === 0){
             message = "No user was found";
-        }else{
+        } else {
             message = `User : id: ${result[0].id}, name:${result[0].name}`;
         }
         // console.log(users,products);
