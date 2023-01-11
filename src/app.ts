@@ -2,7 +2,8 @@ import express from 'express'
 import {Request, Response} from 'express'
 import cors from 'cors';
 import bodyParser from 'body-parser';
-
+import User from './User';
+import Product from './Product';
 
 const app = express();
 const port = 3001;
@@ -12,7 +13,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
 
 let nameOne = "";
-const database = [];
+const users: User[] = [];
+const products: Product[] = [];
+
+
 app.get("/",(req:Request, res:Response)=> {
     res.send("Hello World")
 })
@@ -53,6 +57,23 @@ app.get("/add/:num1/:num2",(req:Request, res:Response)=> {
 app.post("/data",(req:Request, res:Response)=> {
     const data = req.body.data;
     res.send(`${data}`);
+})
+// FROM here everything related to mock DB 
+// objType => users / products 
+app.post("/db/insert/:objType",(req:Request, res:Response)=> {
+    console.log(users,products)
+    const objType = req.params.objType;
+    if (objType === 'Users'){
+        const id:number = req.body.id;
+        const name:string = req.body.name; 
+        users.push(User(id,name));
+    }
+    if (objType === 'Products'){
+        const id:number = req.body.id;
+        const name:string = req.body.name;
+        const price:number = req.body.price;
+        products.push(Product(id,name,price));
+    }
 })
 
 app.listen(port, ()=>{
