@@ -4,5 +4,6 @@ fetch(`${local}/data`,{
     headers: {
         'Content-Type': 'application/json'
     },
-    body: JSON.stringify({data: "info"})
-}).then((res) => res.json()).then((res)=> console.log(res));
+    body: JSON.stringify({data: "Yellow"})
+}).then((res) => res.text()).then(result => console.log(result));
+// prints Yellow
