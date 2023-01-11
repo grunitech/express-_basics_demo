@@ -67,13 +67,19 @@ app.post("/db/insert/:objType",(req:Request, res:Response)=> {
         const id:number = req.body.id;
         const name:string = req.body.name; 
         users.push(User(id,name));
+        res.send("User was entered")
+        return;
     }
     if (objType === 'Products'){
         const id:number = req.body.id;
         const name:string = req.body.name;
         const price:number = req.body.price;
         products.push(Product(id,name,price));
+        res.send("Product was entered")
+        return;
     }
+    res.send("Nothing was added")
+
 })
 
 app.listen(port, ()=>{
