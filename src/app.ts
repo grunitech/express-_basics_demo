@@ -22,11 +22,18 @@ app.get("/hello/upper/:name",(req:Request, res:Response)=> {
     res.send(`Hello ${name.toUpperCase()}`)
 })
 
-app.get("/add/:num1/:num2",(req:Request, res:Response)=> {
+app.get("/concat/:num1/:num2",(req:Request, res:Response)=> {
     const num1 = req.params.num1;
     const num2 = req.params.num2; 
     res.send(`Result: ${num1 + num2}`)
 })
+
+app.get("/add/:num1/:num2",(req:Request, res:Response)=> {
+    const num1 = Number(req.params.num1);
+    const num2 = Number(req.params.num2); 
+    res.send(`Result: ${num1 + num2}`)
+})
+
 
 app.listen(port, ()=>{
     console.log(`Server start at http://localhost:${port}`)
