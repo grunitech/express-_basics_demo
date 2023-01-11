@@ -28,18 +28,18 @@ const products: Product[] = [];
 // App routes
 // home page GET method example 1
 app.get("/",(req:Request, res:Response)=> {
-    res.send("Hello World")
+    res.send("Hello World");
 })
 
 // Add second router calculation GET method example 2
 app.get("/oneplusone",(req:Request, res:Response)=> {
-    res.send(`${1+1}`)
+    res.send(`${1+1}`);
 })
 
 // GET + Query params example 1 
 app.get("/hello/:name",(req:Request, res:Response)=> {
     const name = req.params.name; 
-    res.send(`Hello ${name}`)
+    res.send(`Hello ${name}`);
 })
 
 // Query params Bad example 
@@ -47,27 +47,27 @@ app.get("/hello/:name",(req:Request, res:Response)=> {
 
 // app.get("/:name",(req:Request, res:Response)=> {
 //     const name = req.params.name; 
-//     res.send(`Hello ${name}`)
+//     res.send(`Hello ${name}`);
 // })
 
 // GET + Query params example 2 
 app.get("/hello/upper/:name",(req:Request, res:Response)=> {
     const name = req.params.name; 
-    res.send(`Hello ${name.toUpperCase()}`)
+    res.send(`Hello ${name.toUpperCase()}`);
 })
 
 // GET + Query params type example 1 
 app.get("/concat/:num1/:num2",(req:Request, res:Response)=> {
     const num1 = req.params.num1;
     const num2 = req.params.num2; 
-    res.send(`Result: ${num1 + num2}`)
+    res.send(`Result: ${num1 + num2}`);
 })
 
 // GET + Query params type example 2
 app.get("/add/:num1/:num2",(req:Request, res:Response)=> {
     const num1 = Number(req.params.num1);
     const num2 = Number(req.params.num2); 
-    res.send(`Result: ${num1 + num2}`)
+    res.send(`Result: ${num1 + num2}`);
 })
 
 // POST method example 1
@@ -87,11 +87,13 @@ app.get("/hello/edit/:name",(req:Request, res:Response)=> {
 // FROM here everything related to mock DB 
 // objType => Users / Products / else 
 
+// Show the data in the url
 app.get("/db/info",(req:Request, res:Response)=> {
     res.send(`users: ${users.map(user=>(`${user.id},${user.name}`))} 
              products:${products.map(product=>(`${product.id},${product.name},${product.price}`))}`);
 })
-// Changed a bit from what we did in the workshop to show the data after the insert of data
+
+// Changed a bit from what we did in the workshop to show the data after the insert of data also in console of VSC
 // The following function insert a new element to mock db according to the type given 
 app.post("/db/insert/:objType",(req:Request, res:Response)=> {
     console.log(users,products);
@@ -118,26 +120,31 @@ app.post("/db/insert/:objType",(req:Request, res:Response)=> {
 })
 // The following function looks for a object of the sepecified objType and returns it if found else mentioned
 app.post("/db/getbyid/:objType/:oid",(req:Request, res:Response)=> {
-    console.log(users,products)
+    console.log(users,products);
     const objType = req.params.objType;
+    let message;
     if (objType === 'Users'){
         const id:number = Number(req.params.oid)
         const result = users.filter((user ) => user.id === id)
         if (result.length === 0){
-            res.send("No user was found")
+            message = "No user was found";
         }else{
-            res.send(`User : id: ${result[0].id}, name:${result[0].name}`)
+            message = `User : id: ${result[0].id}, name:${result[0].name}`;
         }
+        // console.log(users,products);
+        res.send(message);
         return;
     }
     if (objType === 'Products'){
         const id:number = Number(req.params.oid);
         const result = products.filter((user ) => user.id === id);
         if (result.length === 0){
-            res.send("No product was found");
-        }else{
-            res.send(`Product : id: ${result[0].id}, name:${result[0].name}, price:${result[0].price}`);
+            message = "No product was found";
+        } else {
+            message = `Product : id: ${result[0].id}, name:${result[0].name}, price:${result[0].price}`;
         }
+        // console.log(users,products);
+        res.send(message);
         return;
     }
     res.send("Invalid");
