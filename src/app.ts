@@ -1,8 +1,15 @@
 import express from 'express'
 import {Request, Response} from 'express'
+import cors from 'cors';
+import bodyParser from 'body-parser';
+
 
 const app = express();
 const port = 3001;
+
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended : true}));
 
 app.get("/",(req:Request, res:Response)=> {
     res.send("Hello World")
@@ -34,8 +41,11 @@ app.get("/add/:num1/:num2",(req:Request, res:Response)=> {
     res.send(`Result: ${num1 + num2}`)
 })
 
+app.post("/data",(req:Request, res:Response)=> {
+    const data = req.body.data;
+    res.send(`${data}`);
+})
 
 app.listen(port, ()=>{
     console.log(`Server start at http://localhost:${port}`)
 });
-
