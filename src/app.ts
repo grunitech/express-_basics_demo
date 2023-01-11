@@ -11,8 +11,10 @@ app.get("/",(req:Request, res:Response)=> {
 app.get("/oneplusone",(req:Request, res:Response)=> {
     res.send(`${1+1}`)
 })
-app.get("/users/",(req:Request, res:Response)=> {
-    res.send(`${1+1}`)
+
+app.get("/hello/:name",(req:Request, res:Response)=> {
+    const name = req.params.name; 
+    res.send(`Hello ${name}`)
 })
 app.listen(port, ()=>{
     console.log(`Server start at http://localhost:${port}`)
