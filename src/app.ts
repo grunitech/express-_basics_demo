@@ -2,8 +2,8 @@ import express from 'express'
 import {Request, Response} from 'express'
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import User from './User';
-import Product from './Product';
+import {User} from './User';
+import {Product} from './Product';
 
 const app = express();
 const port = 3001;

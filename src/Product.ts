@@ -1,4 +1,4 @@
-class Product{
+export class Product{
     id: number
     name: string
     price: number
@@ -8,4 +8,3 @@ class Product{
         this.price = price;
     }
 }
-exports.Product = Product;

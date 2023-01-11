@@ -1,4 +1,4 @@
-class User {
+export class User {
     name:string;
     id:number;
     constructor(id:number,name:string){
@@ -6,4 +6,3 @@ class User {
         this.name = name
     }
 }
-exports.User = User;
