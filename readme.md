@@ -9,45 +9,45 @@ before the start
 Basic Project setup
 
 1. npm init -y 
- setup for JS project
+-> setup for JS project
 
 2. git init 
- setup for git
+-> setup for git
 
 
 Downloads
 
 3. npm i express
- download express to our dependencies
+-> download express to our dependencies
 
 4. npm i --save-dev typescript
- download typescript to our devDependencies
+-> download typescript to our devDependencies
 
 5. npm i --save-dev @types/express @types/node
- download the types express, and node to our devDependencies
+-> download the types express, and node to our devDependencies
 
 6. npm i cors
- download cors to our dependencies
+-> download cors to our dependencies
 
 7. npm i --save-dev @types/cors
- download the type cors to our devDependencies
+-> download the type cors to our devDependencies
 
 8. npm i body-parser
- download body-parser to our dependencies
+-> download body-parser to our dependencies
 
 9. npm i --save-dev @types/cors
- download the type body-parser to our devDependencies
+-> download the type body-parser to our devDependencies
 
 
 Configurations
 
 10. touch .gitignore
- (In Mac) create a file named ".gitignore" since an extension wasn't specified by default ".txt"
+-> (In Mac) create a file named ".gitignore" since an extension wasn't specified by default ".txt"
 
-11. Copy the .gitignore given by Shmuela: https://github.com/shmool/remedy/blob/main/.gitignore 
+11. Copy the contents of .gitignore given by Shmuela: https://github.com/shmool/remedy/blob/main/.gitignore 
 
 12. npx tsc --init
-  create the tsconfig.json file 
+-> create the tsconfig.json file 
 
 13. in tsconfig.json file line 52 ("outDir") -> uncomment and changed value to "./dist"
   - note : the "./dist" directory won't be copied due to the way .gitignore was written 
@@ -56,8 +56,9 @@ Configurations
   - will be uploaded to git
 
 Running Setup
+
 15. in package.json file , key : "scripts" ,
-   enter the following element, "build": "npx tsc",
+->   enter the following element, "build": "npx tsc",
 
    Why? to make life easier
    when we will enter the command in the terminal (or CMD): "npm run build" 
@@ -82,32 +83,37 @@ Running Setup
 Git set initial commit (note: in step 2 we set up the git with git init)
 
 17. git add .
-    adds to the next commit the files that were changes except those specified in ".gitignore" or in a  
+ -> adds to the next commit the files that were changes except those specified in ".gitignore" or in a  
     directory (folder) which specifed in ".gitignore"
 
 18. git commit -m "initial commit"
-    do a commit with the message "initial commit"
+->  do a commit with the message "initial commit"
 
 
 Run the project
 
 19. mkdir src
-    (In Mac) create a folder named "src" in current path
+->  (In Mac) create a folder named "src" in current path
 
 20. mkdir dist
-    (In Mac) create a folder named "dist" from current path
+->  (In Mac) create a folder named "dist" from current path
 
 21. cd src
-    (In both Mac and Windows) enter the directory "src"
+->  (In both Mac and Windows) enter the directory "src"
 
 22. touch app.ts
-    (In Mac) create a file named "app", in the directory "src" since an extension was specified will be ".ts"
+->  (In Mac) create a file named "app", in the directory "src" since an extension was specified will be ".ts"
 
 23. cd .. 
-    exit the current dirctory to the one above it
+->  exit the current dirctory to the one above it
 
 24. npm run build
-    see step 15, for further explanation.
+->  see step 15, for further explanation.
 
 25. npm run start
-    see step 16, for further explanation.
+->  see step 16, for further explanation.
+
+
+Check the server:
+
+28. in src/middle.ts there is further explantions
