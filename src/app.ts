@@ -44,11 +44,14 @@ app.get("/hello/:name",(req:Request, res:Response)=> {
 
 // Query params Bad example 
 // DONT UNCOMMENT :) 
-
+// Will catch everything with one "section" of url. 
+// Every route should be built with prefixes which represent to area this route calculate
+// And every operation should be named with logical meaning to the operation it does.
 // app.get("/:name",(req:Request, res:Response)=> {
 //     const name = req.params.name; 
 //     res.send(`Hello ${name}`);
 // })
+
 
 // GET + Query params example 2 
 app.get("/hello/upper/:name",(req:Request, res:Response)=> {
