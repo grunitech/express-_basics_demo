@@ -1,4 +1,7 @@
 // To use in dev tools
+
+import { User } from "./User";
+
 // always must be first
 const local = `http://localhost:${3001}`;
 
@@ -48,10 +51,11 @@ fetch(`${local}/data`,{
 
 // DB part 2
 // Users
-const newUser1 = {id: 1, name: "Inbal"}
-const newUser2 = {id: 2, name: "Idan"}
-const newUser3 = {id: 3, name: "Tal"}
-const newUser4 = {id: 4, name: "Dan"}
+const newUser1 = new User(1,"Inbal","hello");
+const newUser2 = new User(2,"Idan","world");
+const newUser3 = new User(3,"Tal","work");
+const newUser4 = new User(4,"Dan","demo");
+const newUser5 = new User(5,"Shahar","password");
 
 // Products 
 const newProd1 = {id: 1, name: "water", price:7}
@@ -280,6 +284,6 @@ fetch(`${local}/addToCart2`,{
     headers: {
         'Content-Type': 'application/json'
     },
-    body: JSON.stringify({pid:1,token:"eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkluYmFsIiwiY2FydCI6W119.diBsB9QdEsUw6RsDqCVobo8B4IHotmb_5X4DkUg2boQ"})
+    body: JSON.stringify({pid:1,token:"enter JWT token"})
 
 }).then((res) => res.text()).then(answer => console.log(answer));

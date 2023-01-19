@@ -176,6 +176,7 @@ app.post("/db/getbyid/:objType/:oid",(req:Request, res:Response)=> {
     res.send("Invalid");
 
 })
+// The following function adds a given product to a given user's cart while the user's id is passed in body 
 app.post("/addToCart",(req:Request, res:Response)=> {
     const userId = Number(req.body.uid);
     const productId = Number(req.body.pid);
@@ -188,7 +189,28 @@ app.post("/addToCart",(req:Request, res:Response)=> {
     const result = userResult[0].addToCart(prodResult[0]);
     res.send(JSON.stringify(result));
 })
+// The following function trys to login a user, if successful returns it's jwt token
+app.post("/login",(req:Request, res:Response)=> {
+    const userId = Number(req.body.uid);
+    const password =req.body.pass;
+    const userResult = users.filter((user ) => user.id === userId);
+    if (userResult.length === 0){
+        res.send("No such user");
+        return;
+    }
+    if (!userResult[0].login(password)){
+        res.send("Wrong password!")
+        return;
+    }
+    if (userResult[0].token !== undefined){
+        res.send("Already logged!")
+        return;
+    }
+    userResult[0].createToken();
+    res.send(userResult[0].token);
+})
 
+// The following function adds a given product to a given user's cart while the user's id is passed in jwt token
 app.post("/addToCart2",(req:Request, res:Response)=> {
     let user:User;
     let tokenDecoded:string;
@@ -213,6 +235,8 @@ app.post("/addToCart2",(req:Request, res:Response)=> {
     const result = list[0].addToCart(prodResult[0],true);
     res.send(list[0].token);
 })
+// the following cart does do checkout 
+// TODO Need to empty the user's cart
 app.post("/checkout",(req:Request, res:Response)=> {
     let user:User;
     let tokenDecoded:string;
@@ -231,27 +255,6 @@ app.post("/checkout",(req:Request, res:Response)=> {
     const total = list[0].cart.map(cartItem => cartItem.product.price * cartItem.quantity).reduce((acc,num)=>acc+num);
     res.send(JSON.stringify({total:total,token:list[0].token}));
 })
-app.post("/login",(req:Request, res:Response)=> {
-    const userId = Number(req.body.uid);
-    const password =req.body.pass;
-    const userResult = users.filter((user ) => user.id === userId);
-    if (userResult.length === 0){
-        res.send("No such user");
-        return;
-    }
-    if (!userResult[0].verify(password)){
-        res.send("Wrong password!")
-        return;
-    }
-    if (userResult[0].token !== undefined){
-        res.send("Already logged!")
-        return;
-    }
-    userResult[0].login();
-    res.send(userResult[0].token);
-})
-
-
 // App listen to port
 app.listen(port, ()=>{
     console.log(`Server start at http://localhost:${port}`)

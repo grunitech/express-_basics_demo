@@ -7,9 +7,9 @@ import { saltRounds,secret } from './app';
 export class User {
     name:string; // the name of the user
     id:number;// the user's unique id
-    cart: CartItem[]; 
-    password:string;
-    token: string | undefined;
+    cart: CartItem[]; // the user's cart
+    password:string; // the user encrypted password
+    token: string | undefined; // the user's current jwt token
 
     // constructor with id, and name passed to it.
     constructor(id:number,name:string, password:string){
@@ -18,34 +18,35 @@ export class User {
         this.cart = []
         this.password = bcrypt.hashSync(password,saltRounds);
     }
-    
+    // the following function adds a product to the cart 
+    // the flag tells up from which route it came, (need for both examples to work)
     addToCart (product:Product, flag:boolean = false){
-        //CI : {product: {id: 1, name: "water", price:7}, quantity: 1}
-        //Cart : [{product: {id: 1, name: "water", price:7}, quantity: 6},{product:{id: 2, name: "cola", price:10},quantity:2},({id: 3, name: "hamburger", price: 20},1)]
+        // since id is unique value field. when we filter by it will result in array sized 0 or 1. 
         const inCart = this.cart.filter(cartItem => cartItem.product.id === product.id) 
         if (inCart.length === 0){
+            // when array is sized 0 => didn't found so we create a new CartItem and add it
             const cartItem = new CartItem(product);
             this.cart.push(cartItem);
         } else {
-            const item = inCart[0].product.id;
-            const index = this.cart.map((cartItem)=> cartItem.product.id).indexOf(item);
-            this.cart[index].addByNumber(1);
+            // when array is sized 1 => did found so increase by 1
+            inCart[0].addByNumber(1);
         }
         if (flag){
-            this.login();
+            // resends token
+            this.createToken();
         }
         return this.cart
     }
-
-    verify(password:string){
+    // check when user try to login
+    login(password:string){
         return bcrypt.compareSync(password,this.password);
     }
-
+    // reset token when user try logout
     logout(){
         this.token = undefined;
     }
 
-    login(){
+    createToken(){
         this.token = jwt.sign(JSON.stringify({id:this.id,name:this.name,cart:this.cart}),secret);
         return this.token;
     }
