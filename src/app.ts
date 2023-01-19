@@ -1,3 +1,4 @@
+import jwt,{Jwt } from 'jsonwebtoken';
 // imports from modules
 import express from 'express'
 import { Request, Response } from 'express'
@@ -7,11 +8,13 @@ import cors from 'cors';
 // import from files
 import { User } from './User';
 import { Product } from './Product';
+import { CartItem } from './CartItem';
 
 // constants for app
 const app = express();
 const port = 3001;
-
+export const saltRounds = 10;
+export const secret = "Test";
 // app uses
 app.use(cors()); // used for communications with other apps
 app.use(bodyParser.json()); // allowing the body to be parsed in my app
@@ -21,9 +24,27 @@ app.use(bodyParser.urlencoded({extended : true})); // allowing pass query params
 // version 1 -> Only name
 let nameOne = "";
 
+// users
+const newUser1 = new User(1,"Inbal","hello");
+const newUser2 = new User(2,"Idan","world");
+const newUser3 = new User(3,"Tal","work");
+const newUser4 = new User(4,"Dan","demo");
+const newUser5 = new User(5,"Shahar","password");
+
+// Products 
+const newProd1 = {id: 1, name: "water", price:7}
+const newProd2 = {id: 2, name: "cola", price:10}
+const newProd3 = {id: 3, name: "hamburger", price: 20}
+const newProd4 = {id: 4, name: "milk", price:12}
+
 // version 2 -> Users and Products 
-const users: User[] = [];
-const products: Product[] = [];
+// Original 
+// const users: User[] = [];
+// const products: Product[] = [];
+// V3
+const users:User[] = [newUser1,newUser2,newUser3,newUser4,newUser5]
+const products:Product[] = [newProd1,newProd2,newProd3,newProd4];
+
 
 // App routes
 // home page GET method example 1
@@ -105,7 +126,8 @@ app.post("/db/insert/:objType",(req:Request, res:Response)=> {
     if (objType === 'Users'){
         const id:number = req.body.id;
         const name:string = req.body.name; 
-        users.push(new User(id,name));
+        const password:string = req.body.password; 
+        users.push(new User(id,name,password));
         message = "User was entered";
     } else if (objType === 'Products'){
         const id:number = req.body.id;
@@ -132,7 +154,7 @@ app.post("/db/getbyid/:objType/:oid",(req:Request, res:Response)=> {
         if (result.length === 0){
             message = "No user was found";
         } else {
-            message = `User : id: ${result[0].id}, name:${result[0].name}`;
+            message = `User : id: ${result[0].id}, name:${result[0].name} , cart:${JSON.stringify(result[0].cart)}`;
         }
         // console.log(users,products);
         res.send(message);
@@ -140,7 +162,8 @@ app.post("/db/getbyid/:objType/:oid",(req:Request, res:Response)=> {
     }
     if (objType === 'Products'){
         const id:number = Number(req.params.oid);
-        const result = products.filter((user ) => user.id === id);
+        const result = products.filter((product ) => product.id === id);
+        
         if (result.length === 0){
             message = "No product was found";
         } else {
@@ -153,6 +176,81 @@ app.post("/db/getbyid/:objType/:oid",(req:Request, res:Response)=> {
     res.send("Invalid");
 
 })
+app.post("/addToCart",(req:Request, res:Response)=> {
+    const userId = Number(req.body.uid);
+    const productId = Number(req.body.pid);
+    const prodResult = products.filter((product ) => product.id === productId);
+    const userResult = users.filter((user ) => user.id === userId);
+    if (prodResult.length === 0 || userResult.length === 0){
+        res.send("Invalid");
+        return;
+    }
+    const result = userResult[0].addToCart(prodResult[0]);
+    res.send(JSON.stringify(result));
+})
+
+app.post("/addToCart2",(req:Request, res:Response)=> {
+    let user:User;
+    let tokenDecoded:string;
+    try {
+        tokenDecoded = JSON.stringify(jwt.verify(req.body.token, secret));
+        user = JSON.parse(tokenDecoded);
+    }catch(e){
+        res.send("Invalid token");
+        return;
+    }
+    const list = users.filter((userr)=>user.id === userr.id)
+    if (list.length === 0){
+        res.send("error");
+        return;
+    }
+    const productId = Number(req.body.pid);
+    const prodResult = products.filter((product ) => product.id === productId);
+    if (prodResult.length === 0){
+        res.send("Invalid");
+        return;
+    }
+    const result = list[0].addToCart(prodResult[0],true);
+    res.send(list[0].token);
+})
+app.post("/checkout",(req:Request, res:Response)=> {
+    let user:User;
+    let tokenDecoded:string;
+    try {
+        tokenDecoded = JSON.stringify(jwt.verify(req.body.token, secret));
+        user = JSON.parse(tokenDecoded);
+    }catch(e){
+        res.send("Invalid token");
+        return;
+    }
+    const list = users.filter((userr)=>user.id === userr.id)
+    if (list.length === 0){
+        res.send("error");
+        return;
+    }
+    const total = list[0].cart.map(cartItem => cartItem.product.price * cartItem.quantity).reduce((acc,num)=>acc+num);
+    res.send(JSON.stringify({total:total,token:list[0].token}));
+})
+app.post("/login",(req:Request, res:Response)=> {
+    const userId = Number(req.body.uid);
+    const password =req.body.pass;
+    const userResult = users.filter((user ) => user.id === userId);
+    if (userResult.length === 0){
+        res.send("No such user");
+        return;
+    }
+    if (!userResult[0].verify(password)){
+        res.send("Wrong password!")
+        return;
+    }
+    if (userResult[0].token !== undefined){
+        res.send("Already logged!")
+        return;
+    }
+    userResult[0].login();
+    res.send(userResult[0].token);
+})
+
 
 // App listen to port
 app.listen(port, ()=>{

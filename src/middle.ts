@@ -229,3 +229,57 @@ fetch(`${local}/db/getbyid/Users/7`,{
     },
 }).then((res) => res.text()).then(answer => console.log(answer));
 // Only accepts Products or Users as POST requst see the Method
+
+
+
+// Adding users succesfully
+fetch(`${local}/addToCart`,{
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({pid:1,uid:2})
+}).then((res) => res.text()).then(answer => console.log(answer));
+
+
+fetch(`${local}/db/getbyid/Users/2`,{
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+}).then((res) => res.json()).then(answer => console.log(answer.cart));
+
+
+fetch(`${local}/login`,{
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({uid:1,pass:"Test"})
+}).then((res) => res.text()).then(answer => console.log(answer));
+
+
+fetch(`${local}/login`,{
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({uid:1,pass:"hello"})
+}).then((res) => res.text()).then(answer => console.log(answer));
+
+fetch(`${local}/db/getbyid/Users/2`,{
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+}).then((res) => res.json()).then(answer => console.log(answer.cart));
+
+
+fetch(`${local}/addToCart2`,{
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({pid:1,token:"eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkluYmFsIiwiY2FydCI6W119.diBsB9QdEsUw6RsDqCVobo8B4IHotmb_5X4DkUg2boQ"})
+
+}).then((res) => res.text()).then(answer => console.log(answer));
