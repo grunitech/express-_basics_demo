@@ -252,7 +252,7 @@ app.post("/checkout",(req:Request, res:Response)=> {
         res.send("error");
         return;
     }
-    const total = list[0].cart.map(cartItem => cartItem.product.price * cartItem.quantity).reduce((acc,num)=>acc+num);
+    const total = list[0].cart.map(cartItem => cartItem.product.price * cartItem.quantity).reduce((acc,num)=>acc+num,0);
     res.send(JSON.stringify({total:total,token:list[0].token}));
 })
 // App listen to port
